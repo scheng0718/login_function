@@ -2,6 +2,12 @@
 
 This repository contains the implementation of a user authentication (login) function. The function allows users to provide their credentials (email and password), and the server verifies their identity.
 
+![web screenshot](./screenshots/home_login.png)
+
+![web screenshot](./screenshots/welcome_page.png)
+
+![web screenshot](./screenshots/error.png)
+
 ## Prerequisites
 
 Make sure you have the following software installed before running the application:
