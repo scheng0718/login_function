@@ -1,0 +1,24 @@
+<div class="row mt-5">
+  <div class="col-md-7 m-auto">
+    <h1 class="text-center mt-3"> Account Sign In</h1>
+    <div class="card card-body">
+      <form action="/users/login" method="POST" id="form">
+        <div class="form-group mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="account@example.com" aria-describedby="emailHelp" required>
+        </div>
+        <div class="form-group mb-3">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+        </div>
+        {{#if error}}
+        <div class="error" style="display:block;"> Username or Password is wrong. Please re-enter again!</div>
+        {{/if}}
+        <button type="submit" class="btn btn-outline-primary mt-3">Sign in</button>
+      </form>
+      <p class="lead mt-3">
+        New member? <a href="/users/register">Create Account</a>
+      </p>
+    </div>
+  </div>
+</div>
