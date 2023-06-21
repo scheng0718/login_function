@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
-const Login = require('./models/login')
+const routes = require('./routes')
 const app = express()
 const port = 3000
 
@@ -27,25 +27,8 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(routes)
 
-app.get('/', (req, res) => {
-  const error = req.query.error === 'true';
-  res.render('index', { error })
-})
-app.post('/login', (req, res) => {
-  const email = req.body.email
-  const password = req.body.password
-  Login.findOne({email, password})
-    .lean()
-    .then(user => {
-      if (!user) {
-        res.redirect('/?error=true')
-      } else {
-        const firstName = user.firstName
-        res.render('welcome', { firstName })
-      }
-    })
-})
 app.listen(port, () => {
   console.log(`The server is running and listening at http://localhost:${port}`)
 })
