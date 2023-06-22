@@ -1,8 +1,10 @@
 // 引用 Express 與 Express 路由器
 const express = require('express')
+const passport = require('passport')
 const router = express.Router()
 // 引用 User model
 const User = require('../../models/user')
+
 // 定義登入路由
 router.get('/login', (req, res) => {
   const error = req.query.error === 'true'
@@ -33,27 +35,31 @@ router.post('/register', (req, res) => {
     .then(() => res.redirect('/users/login'))
     .catch(error => console.log(error))   
 })
-
 // 定義登入功能路由
-router.post('/login', (req, res) => {
-  const { email, password } = req.body
-  User.findOne({email, password})
-    .lean()
-    .then(user => {
-      if (!user) {
-        res.redirect('/users/login/?error=true')
-      } else {
-        const firstName = user.firstName
-        const lastName = user.lastName
-        // 在 session 中將認證通過和名字傳回給客戶端 
-        // req.session.authenticated = true
-        req.session.user = firstName + ' ' + lastName
-        console.log(req.session)
-        console.log(req.sessionID)
-        res.redirect('/welcome')
-      }
-    })
-    .catch(error => console.log(error))
-})
+// router.post('/login', (req, res) => {
+//   const { email, password } = req.body
+//   User.findOne({email, password})
+//     .lean()
+//     .then(user => {
+//       if (!user) {
+//         res.redirect('/users/login/?error=true')
+//       } else {
+//         const firstName = user.firstName
+//         const lastName = user.lastName
+//         // 在 session 中將認證通過和名字傳回給客戶端 
+//         // req.session.authenticated = true
+//         req.session.user = firstName + ' ' + lastName
+//         console.log(req.session)
+//         console.log(req.sessionID)
+//         res.redirect('/welcome')
+//       }
+//     })
+//     .catch(error => console.log(error))
+// })
+// 改寫登入功能路由 使用 passport 認證機制
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/welcome',
+  failureRedirect: '/users/login/?error=true'
+}))
 // 匯出路由模組
 module.exports = router
