@@ -13,11 +13,12 @@ app.engine('hbs', exphbs({
 app.set('view engine', 'hbs')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
-// app.use(cookieParser())
+// app.use(cookieParser()) 寫在路由之前
 app.use(session({
   secret: 'ThisIsMySecret',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: false,
+  name: 'user'
 }))
 app.use(routes)
 

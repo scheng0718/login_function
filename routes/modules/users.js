@@ -5,7 +5,9 @@ const router = express.Router()
 const User = require('../../models/user')
 // 定義登入路由
 router.get('/login', (req, res) => {
-  const error = req.query.error === 'true';
+  const error = req.query.error === 'true'
+  // console.log(req.session)
+  // console.log(req.sessionID)
   res.render('login', { error })
 })
 // 定義註冊路由
@@ -34,8 +36,7 @@ router.post('/register', (req, res) => {
 
 // 定義登入功能路由
 router.post('/login', (req, res) => {
-  const email = req.body.email
-  const password = req.body.password
+  const { email, password } = req.body
   User.findOne({email, password})
     .lean()
     .then(user => {
@@ -45,11 +46,14 @@ router.post('/login', (req, res) => {
         const firstName = user.firstName
         const lastName = user.lastName
         // 在 session 中將認證通過和名字傳回給客戶端 
-        req.session.authenticated = true
-        req.session.name = firstName + ' ' + lastName
+        // req.session.authenticated = true
+        req.session.user = firstName + ' ' + lastName
+        console.log(req.session)
+        console.log(req.sessionID)
         res.redirect('/welcome')
       }
     })
+    .catch(error => console.log(error))
 })
 // 匯出路由模組
 module.exports = router
