@@ -61,5 +61,21 @@ router.post('/login', passport.authenticate('local', {
   successRedirect: '/welcome',
   failureRedirect: '/users/login/?error=true'
 }))
+// 自定義登出功能，加上自定義驗證的 middleware 
+// app.get('/logout', auth, (req, res) => {
+//   req.session.destroy(() => {
+//     console.log('session destroyed')
+//   })
+//   res.render('index', { alert: 'You are logged out! Re-enter email and password to log in again!' })
+// })
+// 登出 GET 路由
+router.get('/logout', (req, res) => {
+  req.logout(function (error) {
+    if (error) {
+      console.log(error)
+    }
+    res.redirect('/users/login')
+  })
+})
 // 匯出路由模組
 module.exports = router
