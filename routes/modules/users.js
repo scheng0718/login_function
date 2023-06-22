@@ -43,7 +43,11 @@ router.post('/login', (req, res) => {
         res.redirect('/users/login/?error=true')
       } else {
         const firstName = user.firstName
-        res.render('welcome', { firstName })
+        const lastName = user.lastName
+        // 在 session 中將認證通過和名字傳回給客戶端 
+        req.session.authenticated = true
+        req.session.name = firstName + ' ' + lastName
+        res.redirect('/welcome')
       }
     })
 })
